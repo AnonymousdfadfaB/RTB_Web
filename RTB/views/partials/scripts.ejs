@@ -1,0 +1,25 @@
+<!-- Socket.io -->
+<script src="/socket.io/socket.io.js"></script>
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/your-code.js" crossorigin="anonymous"></script>
+
+<!-- Custom JS -->
+<script>
+    // Dropdown menu
+    document.querySelectorAll('.relative button').forEach(button => {
+        button.addEventListener('click', function() {
+            const dropdown = this.nextElementSibling;
+            dropdown.classList.toggle('hidden');
+        });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.matches('.relative button')) {
+            document.querySelectorAll('.relative .absolute').forEach(dropdown => {
+                dropdown.classList.add('hidden');
+            });
+        }
+    });
+</script>

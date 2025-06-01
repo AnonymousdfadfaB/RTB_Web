@@ -1,0 +1,30 @@
+﻿<%- include('layouts/main', { title: 'Trang chủ' }) %>
+
+<section class="hero bg-indigo-500 text-white py-20">
+    <div class="container mx-auto text-center">
+        <h1 class="text-4xl font-bold mb-4">Đấu giá trực tuyến thời gian thực</h1>
+        <p class="text-xl mb-8">Hơn 10,000 sản phẩm độc đáo đang chờ bạn</p>
+        <a href="/auctions" class="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">Khám phá ngay</a>
+    </div>
+</section>
+
+<section class="featured-auctions container mx-auto my-12">
+    <h2 class="text-2xl font-bold mb-8">Sản phẩm nổi bật</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <% featuredAuctions.forEach(auction => { %>
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+            <a href="/auctions/<%= auction._id %>">
+                <img src="<%= auction.images[0] || '/images/default.jpg' %>" alt="<%= auction.title %>" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg mb-2"><%= auction.title %></h3>
+                    <div class="flex justify-between items-center">
+                        <span class="text-indigo-600 font-bold"><%= auction.currentPrice.toLocaleString() %> VND</span>
+                        <span class="text-sm text-gray-500"><%= auction.bids.length %> lượt đấu</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <% }); %>
+    </div>
+</section>

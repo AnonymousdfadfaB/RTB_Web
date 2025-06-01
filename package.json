@@ -17,6 +17,7 @@
   "homepage": "https://github.com/AnonymousdfadfaB/RTB_Web#readme",
   "description": "",
   "dependencies": {
+    "ejs": "^3.1.10",
     "express": "^5.1.0"
   }
 }

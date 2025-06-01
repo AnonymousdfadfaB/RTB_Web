@@ -1,0 +1,29 @@
+﻿<header class="bg-indigo-600 text-white">
+    <nav class="container mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold">AuctionHub</a>
+
+            <div class="flex space-x-4">
+                <a href="/auctions" class="hover:underline">Đấu giá</a>
+                <% if (user) { %>
+                <a href="/auctions/create" class="hover:underline">Tạo đấu giá</a>
+                <div class="relative">
+                    <button class="flex items-center space-x-1">
+                        <span><%= user.username %></span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                        <a href="/users/profile" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">Hồ sơ</a>
+                        <a href="/auth/logout" class="block px-4 py-2 text-gray-800 hover:bg-indigo-100">Đăng xuất</a>
+                    </div>
+                </div>
+                <% } else { %>
+                <a href="/auth/login" class="hover:underline">Đăng nhập</a>
+                <a href="/auth/register" class="bg-white text-indigo-600 px-4 py-2 rounded hover:bg-gray-100">Đăng ký</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+</header>
