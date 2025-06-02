@@ -1,0 +1,689 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết đấu giá - AuctionHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #4f46e5;
+            --secondary: #f97316;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --danger: #ef4444;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+            .logo i {
+                color: var(--secondary);
+            }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.3s;
+        }
+
+            nav a:hover, nav a.active {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: #ea580c;
+            }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+            .btn-outline:hover {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+        .btn-back {
+            background-color: var(--light-gray);
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .btn-back:hover {
+                background-color: #d1d5db;
+            }
+
+        /* Auction Detail */
+        .auction-detail-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 992px) {
+            .auction-detail-container {
+                grid-template-columns: 1fr 350px;
+            }
+        }
+
+        .auction-gallery {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .main-image {
+            height: 400px;
+            overflow: hidden;
+        }
+
+            .main-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+        .thumbnail-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            padding: 1rem;
+        }
+
+        .thumbnail {
+            height: 80px;
+            cursor: pointer;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+            .thumbnail.active {
+                border-color: var(--primary);
+            }
+
+            .thumbnail img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .auction-info {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+            .auction-info h1 {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+                color: var(--dark);
+            }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+            .meta-info span {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+
+        .description {
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .bid-section {
+            background: var(--light);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .bid-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .current-bid {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .time-left {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .bid-form {
+            margin-bottom: 1.5rem;
+        }
+
+            .bid-form input {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border: 1px solid var(--light-gray);
+                border-radius: 0.5rem;
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+        .bid-history h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .bid-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .bid-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+            .bid-item:last-child {
+                border-bottom: none;
+            }
+
+        .bidder {
+            font-weight: 500;
+        }
+
+        .bid-amount {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .bid-time {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+            .footer-section h3::after {
+                content: '';
+                position: absolute;
+                bottom: -0.5rem;
+                left: 0;
+                width: 40px;
+                height: 3px;
+                background: var(--secondary);
+            }
+
+        .footer-section p {
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+            .footer-links li {
+                margin-bottom: 0.75rem;
+            }
+
+            .footer-links a {
+                color: white;
+                opacity: 0.8;
+                text-decoration: none;
+                transition: opacity 0.3s;
+            }
+
+                .footer-links a:hover {
+                    opacity: 1;
+                }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+            .social-icons a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 50%;
+                color: white;
+                text-decoration: none;
+                transition: background 0.3s;
+            }
+
+                .social-icons a:hover {
+                    background: var(--secondary);
+                }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .bid-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-gavel"></i>
+                    <span>AuctionHub</span>
+                </div>
+
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li><a href="#">Đấu giá</a></li>
+                        <li><a href="#">Sản phẩm</a></li>
+                        <li><a href="#">Hướng dẫn</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                    </ul>
+                </nav>
+
+                <div class="user-actions">
+                    <button class="btn btn-outline" id="loginBtn">Đăng nhập</button>
+                    <button class="btn btn-primary" id="registerBtn">Đăng ký</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <button class="btn btn-back" id="backToList">
+            <i class="fas fa-arrow-left"></i> Quay lại danh sách
+        </button>
+
+        <div class="auction-detail-container">
+            <div class="auction-gallery">
+                <div class="main-image">
+                    <img id="mainImage" src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Đồng hồ Rolex">
+                </div>
+                <div class="thumbnail-container">
+                    <div class="thumbnail active">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumbnail 1" onclick="changeMainImage(this.src)">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://images.unsplash.com/photo-1539874754764-5a96559165b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumbnail 2" onclick="changeMainImage(this.src)">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://images.unsplash.com/photo-1557531365-e8b22d93dbd0?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumbnail 3" onclick="changeMainImage(this.src)">
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://images.unsplash.com/photo-1611252871531-89a1b2f3b4f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Thumbnail 4" onclick="changeMainImage(this.src)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="auction-info">
+                <h1 id="productTitle">Đồng hồ Rolex Oyster Perpetual</h1>
+                <div class="meta-info">
+                    <span><i class="fas fa-user"></i> <span id="sellerName">NguyenVanA</span></span>
+                    <span><i class="fas fa-tag"></i> <span id="productCategory">Đồng hồ</span></span>
+                    <span><i class="fas fa-calendar-alt"></i> <span id="startDate">15/06/2023</span></span>
+                </div>
+
+                <div class="description" id="productDescription">
+                    <p>Đồng hồ Rolex Oyster Perpetual 41mm mới 100%, full box, bảo hành 5 năm chính hãng.</p>
+                    <p>Mặt số màu xanh dương Oystersteel với khả năng chống nước 100m. Dây đeo Oyster, 3 mắt kim đồng hồ, bộ máy tự động Rolex Caliber 3230.</p>
+                </div>
+
+                <div class="bid-section">
+                    <div class="bid-header">
+                        <div class="current-bid" id="currentPrice">25.500.000 ₫</div>
+                        <div class="time-left"><i class="fas fa-clock"></i> <span id="countdown">2 ngày 5 giờ</span></div>
+                    </div>
+
+                    <div class="bid-form">
+                        <input type="number" id="bidAmount" placeholder="Nhập giá đấu (VND)" min="25500001" value="25600000">
+                        <button class="btn btn-primary" id="placeBidBtn">Đặt giá ngay</button>
+                    </div>
+
+                    <div class="login-prompt" id="loginPrompt">
+                        <p>Bạn cần đăng nhập để đặt giá. <a href="#" style="color: var(--primary);">Đăng nhập ngay</a></p>
+                    </div>
+                </div>
+
+                <div class="bid-history">
+                    <h3>Lịch sử đấu giá</h3>
+                    <div class="bid-list" id="bidList">
+                        <div class="bid-item">
+                            <div>
+                                <div class="bidder">TranMinhH</div>
+                                <div class="bid-time">10 phút trước</div>
+                            </div>
+                            <div class="bid-amount">25.500.000 ₫</div>
+                        </div>
+                        <div class="bid-item">
+                            <div>
+                                <div class="bidder">LeVanK</div>
+                                <div class="bid-time">32 phút trước</div>
+                            </div>
+                            <div class="bid-amount">25.200.000 ₫</div>
+                        </div>
+                        <div class="bid-item">
+                            <div>
+                                <div class="bidder">PhamThiL</div>
+                                <div class="bid-time">1 giờ trước</div>
+                            </div>
+                            <div class="bid-amount">25.000.000 ₫</div>
+                        </div>
+                        <div class="bid-item">
+                            <div>
+                                <div class="bidder">NguyenVanP</div>
+                                <div class="bid-time">2 giờ trước</div>
+                            </div>
+                            <div class="bid-amount">24.800.000 ₫</div>
+                        </div>
+                        <div class="bid-item">
+                            <div>
+                                <div class="bidder">HoangThiQ</div>
+                                <div class="bid-time">3 giờ trước</div>
+                            </div>
+                            <div class="bid-amount">24.500.000 ₫</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Về AuctionHub</h3>
+                    <p>AuctionHub là nền tảng đấu giá trực tuyến hàng đầu Việt Nam, kết nối người mua và người bán trên khắp cả nước.</p>
+                    <p>Với hơn 10,000 sản phẩm đa dạng, chúng tôi mang đến trải nghiệm đấu giá công bằng, minh bạch và thú vị.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Liên kết</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li><a href="#">Sản phẩm đấu giá</a></li>
+                        <li><a href="#">Điều khoản sử dụng</a></li>
+                        <li><a href="#">Chính sách bảo mật</a></li>
+                        <li><a href="#">Hướng dẫn đấu giá</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Hỗ trợ</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                        <li><a href="#">Hướng dẫn thanh toán</a></li>
+                        <li><a href="#">Chính sách vận chuyển</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Liên hệ hỗ trợ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Kết nối</h3>
+                    <p>Theo dõi chúng tôi trên mạng xã hội để cập nhật những sản phẩm đấu giá mới nhất.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2023 AuctionHub. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const backToListBtn = document.getElementById('backToList');
+        const placeBidBtn = document.getElementById('placeBidBtn');
+        const bidAmountInput = document.getElementById('bidAmount');
+        const bidList = document.getElementById('bidList');
+        const currentPriceElement = document.getElementById('currentPrice');
+        const countdownElement = document.getElementById('countdown');
+        const loginPrompt = document.getElementById('loginPrompt');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('mainImage');
+
+        // URL parameters to simulate product data
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id') || '1';
+        const productTitle = urlParams.get('title') || 'Đồng hồ Rolex Oyster Perpetual';
+        const sellerName = urlParams.get('seller') || 'NguyenVanA';
+        const startingPrice = parseInt(urlParams.get('price')) || 25500000;
+        const endTime = new Date();
+        endTime.setDate(endTime.getDate() + 2); // 2 days from now
+
+        // Set product details
+        document.getElementById('productTitle').textContent = productTitle;
+        document.getElementById('sellerName').textContent = sellerName;
+        document.getElementById('currentPrice').textContent = startingPrice.toLocaleString() + ' ₫';
+        bidAmountInput.min = startingPrice + 1;
+        bidAmountInput.value = startingPrice + 1000;
+
+        // Set countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const timeDiff = endTime - now;
+
+            if (timeDiff <= 0) {
+                countdownElement.textContent = "Đã kết thúc";
+                placeBidBtn.disabled = true;
+                bidAmountInput.disabled = true;
+                return;
+            }
+
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+            countdownElement.textContent = `${days} ngày ${hours} giờ ${minutes} phút`;
+        }
+
+        // Initialize countdown
+        updateCountdown();
+        setInterval(updateCountdown, 60000); // Update every minute
+
+        // Event Listeners
+        backToListBtn.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        placeBidBtn.addEventListener('click', () => {
+            const bidAmount = parseInt(bidAmountInput.value);
+            const currentPrice = parseInt(currentPriceElement.textContent.replace(/[^\d]/g, ''));
+
+            if (isNaN(bidAmount) || bidAmount <= currentPrice) {
+                alert(`Giá đấu phải lớn hơn giá hiện tại (${currentPrice.toLocaleString()} VND)`);
+                return;
+            }
+
+            // Update current price
+            currentPriceElement.textContent = bidAmount.toLocaleString() + ' ₫';
+
+            // Update bid input
+            bidAmountInput.min = bidAmount + 1;
+            bidAmountInput.value = bidAmount + 1000;
+
+            // Add to bid history
+            const now = new Date();
+            const newBid = document.createElement('div');
+            newBid.className = 'bid-item';
+            newBid.innerHTML = `
+                <div>
+                    <div class="bidder">Bạn</div>
+                    <div class="bid-time">Vừa xong</div>
+                </div>
+                <div class="bid-amount">${bidAmount.toLocaleString()} ₫</div>
+            `;
+            bidList.insertBefore(newBid, bidList.firstChild);
+
+            alert(`Bạn đã đặt giá thành công ${bidAmount.toLocaleString()} VND!`);
+        });
+
+        // Change main image
+        function changeMainImage(src) {
+            mainImage.src = src;
+
+            // Update active thumbnail
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            event.target.parentElement.classList.add('active');
+        }
+
+        // Simulate user login state
+        const isLoggedIn = false; // Change to true to see bid form
+        if (isLoggedIn) {
+            loginPrompt.style.display = 'none';
+        } else {
+            placeBidBtn.disabled = true;
+            bidAmountInput.disabled = true;
+        }
+    </script>
+</body>
+</html>

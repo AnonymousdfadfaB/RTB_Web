@@ -50,6 +50,7 @@ app.set('views', 'views');
 
 // Routes
 app.use('/', require('./routes/index'));
+app.use('/auctionsession', require('./routes/auction_session'));
 /*
 app.use('/auth', require('./routes/auth'));
 app.use('/auctions', require('./routes/auctions'));
