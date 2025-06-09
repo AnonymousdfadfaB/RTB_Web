@@ -26,8 +26,16 @@
                     </ul>
                 </nav>
             </div>
+            <% if (user) { %>
+            <!-- Hiển thị khi đã đăng nhập -->
+            <div class="user-section">
+                <i class="fas fa-user"></i>
+                <span><%= user.username %></span>
+                <a href="/logout" class="btn btn-outline">Đăng xuất</a>
+            </div>
+            <% } else { %>
             <div class="login-section">
-                <form id="loginForm">
+                <form method="post" action="/login" id="loginForm">
                     <input type="text" id="loginUsername" placeholder="Tên đăng nhập" required>
                     <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
                     <button type="submit" class="btn btn-primary">Đăng nhập</button>
@@ -35,7 +43,7 @@
                 </form>
             </div>
             <div class="register-section">
-                <form id="registerForm">
+                <form method="post" action="/register" id="registerForm">
                     <span class="close">&times;</span>
                     <input type="text" id="registerUsername" placeholder="Tên đăng nhập" required>
                     <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
@@ -44,6 +52,7 @@
                     <button type="submit" class="btn btn-primary">Đăng ký</button>
                 </form>
             </div>
+            <% } %>
         </div>
     </header>
 
@@ -193,9 +202,8 @@
     </footer>
 
     <!-- Create Auction Modal -->
-    
-
     <script>
+            /*
         // DOM Elements
         const createAuctionBtn = document.getElementById('createAuctionBtn');
         const createAuctionModal = document.getElementById('createAuctionModal');
@@ -352,9 +360,8 @@
                 // Chuyển hướng đến trang chi tiết
                 window.location.href = url;
             }
-    </script>
-    <script>
-        < script >
+
+
         // Lưu trữ tài khoản (tạm thời, không dùng database)
         let users = [];
 
@@ -448,7 +455,45 @@
             alert('Tên đăng nhập hoặc mật khẩu không đúng!');
         }
     });
+        * /
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault(); // Ngăn form gửi theo cách thông thường
+
+  const username = document.getElementById('username').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  try {
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Đăng ký thành công
+      document.getElementById('message').innerHTML = `
+        <div class="success">Đăng ký thành công! Đang chuyển hướng...</div>
+      `;
+      setTimeout(() => window.location.href = '/login', 2000);
+    } else {
+      // Hiển thị lỗi từ server
+      document.getElementById('message').innerHTML = `
+        <div class="error">${data.error}</div>
+      `;
+    }
+  } catch (error) {
+    console.error('Lỗi:', error);
+    document.getElementById('message').innerHTML = `
+      <div class="error">Lỗi kết nối, vui lòng thử lại!</div>
+    `;
+  }
+});
     </script>
-    </script>
+
 </body>
 </html>
