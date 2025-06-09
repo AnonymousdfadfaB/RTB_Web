@@ -1,4 +1,4 @@
-﻿require('dotenv').config();
+﻿
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cookieParser = require('cookie-parser');
@@ -8,12 +8,12 @@ const app = express();
 const server = require('http').createServer(app);
 
 // Kết nối MongoDB
-const client = new MongoClient(process.enc.MONGODB_URI);
+const client = new MongoClient("mongodb://localhost:27017");
 let db, usersCollection, sessionsCollection;
 
 async function connectDB() {
     await client.connect();
-    db = client.db();
+    db = client.db("auction-app");
     usersCollection = db.collection('users');
     sessionsCollection = db.collection('sessions');
     console.log("Connected to MongoDB");
