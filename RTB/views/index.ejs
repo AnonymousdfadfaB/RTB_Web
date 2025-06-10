@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuctionHub - Đấu Giá Sản Phẩm Trực Tuyến</title>
+    <title>AuctionHub - Đấu giá trực tuyến</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -28,6 +28,11 @@
             </div>
             <% if (user) { %>
             <!-- Hiển thị khi đã đăng nhập -->
+            <div class="create-auction">
+                <a href="/createauctions" target="_blank" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Tạo đấu giá mới
+                </a>
+            </div>
             <div class="user-section">
                 <i class="fas fa-user"></i>
                 <span><%= user.username %></span>
@@ -65,6 +70,122 @@
 
     <!-- Main Content -->
     <main class="main-content">
+        <h2 class="main-title">Sản Phẩm Đang Đấu Giá</h2>
+        <div class="auction-filters">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+            </div>
+        </div>
+        <div class="auction-grid">
+            <!-- Auction Item 1 -->
+            <div class="auction-card">
+                <div class="auction-image">
+                    <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Đồng hồ Rolex">
+                    <div class="auction-status">Đang đấu giá</div>
+                    <div class="time-left"><i class="fas fa-clock"></i> 2d 5h</div>
+                </div>
+                <div class="auction-info">
+                    <h3>Đồng hồ Rolex Oyster Perpetual</h3>
+                    <div class="price">25.500.000 ₫</div>
+                    <div class="meta-info">
+                        <span class="bid-count"><i class="fas fa-gavel"></i> 12 lượt</span>
+                        <span class="seller"><i class="fas fa-user"></i> NguyenVanA</span>
+                    </div>
+                    <button class="btn btn-primary">Đấu giá</button>
+                </div>
+            </div>
+
+            <!-- Auction Item 2 -->
+            <div class="auction-card">
+                <div class="auction-image">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tai nghe Sony">
+                    <div class="auction-status">Đang đấu giá</div>
+                    <div class="time-left"><i class="fas fa-clock"></i> 1d 8h</div>
+                </div>
+                <div class="auction-info">
+                    <h3>Tai nghe Sony WH-1000XM4</h3>
+                    <div class="price">4.250.000 ₫</div>
+                    <div class="meta-info">
+                        <span class="bid-count"><i class="fas fa-gavel"></i> 8 lượt</span>
+                        <span class="seller"><i class="fas fa-user"></i> TranThiB</span>
+                    </div>
+                    <button class="btn btn-primary">Đấu giá</button>
+                </div>
+            </div>
+
+            <!-- Auction Item 3 -->
+            <div class="auction-card">
+                <div class="auction-image">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Đồng hồ thông minh">
+                    <div class="auction-status">Đang đấu giá</div>
+                    <div class="time-left"><i class="fas fa-clock"></i> 3d 2h</div>
+                </div>
+                <div class="auction-info">
+                    <h3>Apple Watch Series 7 GPS 45mm</h3>
+                    <div class="price">8.900.000 ₫</div>
+                    <div class="meta-info">
+                        <span class="bid-count"><i class="fas fa-gavel"></i> 15 lượt</span>
+                        <span class="seller"><i class="fas fa-user"></i> LeVanC</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="goToAuctionDetail('1', 'Đồng hồ Rolex Oyster Perpetual', 'NguyenVanA', 25500000)">Đấu giá</button>
+                </div>
+            </div>
+
+            <!-- Auction Item 4 -->
+            <div class="auction-card">
+                <div class="auction-image">
+                    <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Máy ảnh Sony">
+                    <div class="auction-status">Đang đấu giá</div>
+                    <div class="time-left"><i class="fas fa-clock"></i> 5h 30m</div>
+                </div>
+                <div class="auction-info">
+                    <h3>Máy ảnh Sony Alpha A7 III</h3>
+                    <div class="price">32.750.000 ₫</div>
+                    <div class="meta-info">
+                        <span class="bid-count"><i class="fas fa-gavel"></i> 22 lượt</span>
+                        <span class="seller"><i class="fas fa-user"></i> PhamThiD</span>
+                    </div>
+                    <button class="btn btn-primary">Đấu giá</button>
+                </div>
+            </div>
+
+            <!-- Auction Item 5 -->
+            <div class="auction-card">
+                <div class="auction-image">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Giày thể thao">
+                    <div class="auction-status">Đang đấu giá</div>
+                    <div class="time-left"><i class="fas fa-clock"></i> 6d 4h</div>
+                </div>
+                <div class="auction-info">
+                    <h3>Giày Nike Air Jordan 1 Retro High</h3>
+                    <div class="price">3.450.000 ₫</div>
+                    <div class="meta-info">
+                        <span class="bid-count"><i class="fas fa-gavel"></i> 7 lượt</span>
+                        <span class="seller"><i class="fas fa-user"></i> HoangVanE</span>
+                    </div>
+                    <button class="btn btn-primary">Đấu giá</button>
+                </div>
+            </div>
+
+            <!-- Auction Item 6 -->
+            <div class="auction-card">
+                <div class="auction-image">
+                    <img src="https://images.unsplash.com/photo-1505740106531-4243f3831c78?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tai nghe không dây">
+                    <div class="auction-status">Đang đấu giá</div>
+                    <div class="time-left"><i class="fas fa-clock"></i> 1d 12h</div>
+                </div>
+                <div class="auction-info">
+                    <h3>Tai nghe AirPods Pro 2</h3>
+                    <div class="price">5.200.000 ₫</div>
+                    <div class="meta-info">
+                        <span class="bid-count"><i class="fas fa-gavel"></i> 9 lượt</span>
+                        <span class="seller"><i class="fas fa-user"></i> NguyenThiF</span>
+                    </div>
+                    <button class="btn btn-primary">Đấu giá</button>
+                </div>
+            </div>
+        </div>
         <h2 class="main-title">Sản Phẩm Đang Đấu Giá</h2>
         <div class="auction-filters">
             <div class="search-box">
@@ -305,331 +426,5 @@
             });
         }
     </script>
-    <script>
-            /*
-             //register, login, logout
-    document.getElementById('registerForm').addEventListener('submit', async (e) => {
-     e.preventDefault();
-     const username = document.getElementById('registerUsername').value;
-     const password = document.getElementById('registerPassword').value;
-     const confirmPassword = document.getElementById('registerConfirmPassword').value;
-     const email = document.getElementById('registerEmail').value;
-     if (password == confirmPassword) {
-         window.alert("password does not match");
-         return;
-     }
-     try {
-         const response = await fetch('/api/register', {
-             method: 'POST',
-             headers: {
-                 'Content-Type': 'application/json',
-             },
-             body: JSON.stringify({ username, password, email }),
-         });
-         if (response.ok) {
-             window.alert("successfully register account!");
-             document.getElementById('registerForm').reset();
-         } else {
-             if (response.status === 400) {
-                 const data = await response.json();
-                 window.alert(data.error);
-             } else {
-                 throw new Error(`Unexpected response status: ${response.status}`);
-             }
-         }
-     } catch (err) {
-         console.error("Error: ", error);
-     }
-        // DOM Elements
-        const createAuctionBtn = document.getElementById('createAuctionBtn');
-        const createAuctionModal = document.getElementById('createAuctionModal');
-        const closeModalBtns = document.querySelectorAll('.close-modal');
-        const auctionCards = document.querySelectorAll('.auction-card');
-        const auctionDetailSection = document.getElementById('auctionDetail');
-        const imagePreview = document.getElementById('imagePreview');
-        const imagesInput = document.getElementById('images');
-
-        // Set minimum end time (current time + 1 hour)
-        const now = new Date();
-        now.setHours(now.getHours() + 1);
-        document.getElementById('endTime').min = now.toISOString().slice(0, 16);
-
-        // Event Listeners
-        createAuctionBtn.addEventListener('click', () => {
-            createAuctionModal.classList.add('active');
-        });
-
-        closeModalBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                createAuctionModal.classList.remove('active');
-            });
-        });
-
-        // Close modal when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === createAuctionModal) {
-                createAuctionModal.classList.remove('active');
-            }
-        });
-
-        // Auction card click handler
-        auctionCards.forEach(card => {
-            card.addEventListener('click', () => {
-                // Hide auction grid and show detail section
-                document.querySelector('.auction-grid').style.display = 'none';
-                document.querySelector('.auction-filters').style.display = 'none';
-                document.querySelector('.section-title').style.display = 'none';
-                auctionDetailSection.style.display = 'block';
-
-                // Scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        });
-
-        // Back to auction list (simulated)
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('back-to-list')) {
-                auctionDetailSection.style.display = 'none';
-                document.querySelector('.auction-grid').style.display = 'grid';
-                document.querySelector('.auction-filters').style.display = 'flex';
-                document.querySelector('.section-title').style.display = 'block';
-            }
-        });
-
-        // Image preview for new auction
-        imagesInput.addEventListener('change', function (e) {
-            imagePreview.innerHTML = '';
-
-            if (this.files.length > 5) {
-                alert('Bạn chỉ có thể tải lên tối đa 5 ảnh');
-                this.value = '';
-                return;
-            }
-
-            Array.from(this.files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const img = document.createElement('img');
-                    img.src = event.target.result;
-                    img.className = 'w-full h-32 object-cover rounded-lg';
-                    imagePreview.appendChild(img);
-                }
-                reader.readAsDataURL(file);
-            });
-        });
-
-        // Change main image in auction detail
-        function changeMainImage(src) {
-            document.getElementById('mainImage').src = src;
-
-            // Update active class
-            document.querySelectorAll('.thumbnail').forEach(thumb => {
-                thumb.classList.remove('active');
-            });
-            event.target.parentElement.classList.add('active');
-        }
-
-        // Submit auction form
-        document.getElementById('submitAuctionBtn').addEventListener('click', function () {
-            const title = document.getElementById('title').value;
-            const startingPrice = document.getElementById('startingPrice').value;
-
-            if (!title || !startingPrice) {
-                alert('Vui lòng nhập đầy đủ thông tin');
-                return;
-            }
-
-            alert(`Đấu giá "${title}" đã được tạo thành công với giá khởi điểm ${parseInt(startingPrice).toLocaleString()} VND!`);
-            createAuctionModal.classList.remove('active');
-            document.getElementById('auctionForm').reset();
-            imagePreview.innerHTML = '';
-        });
-
-        // Simulate bid placement
-        document.querySelector('.bid-form .btn').addEventListener('click', function () {
-            const bidInput = document.querySelector('.bid-form input');
-            const bidAmount = parseInt(bidInput.value);
-            const currentBid = document.querySelector('.current-bid');
-
-            if (!bidAmount || bidAmount <= 25500000) {
-                alert('Giá đấu phải lớn hơn giá hiện tại');
-                return;
-            }
-
-            // Update current bid
-            currentBid.textContent = bidAmount.toLocaleString() + ' ₫';
-
-            // Update bid input
-            bidInput.min = bidAmount + 1;
-            bidInput.value = bidAmount + 1000;
-
-            // Add to bid history
-            const bidList = document.querySelector('.bid-list');
-            const newBid = document.createElement('div');
-            newBid.className = 'bid-item';
-            newBid.innerHTML = `
-                        <div>
-                            <div class="bidder">Bạn</div>
-                            <div class="bid-time">Vừa xong</div>
-                        </div>
-                        <div class="bid-amount">${bidAmount.toLocaleString()} ₫</div>
-                    `;
-            bidList.prepend(newBid);
-
-            alert(`Bạn đã đặt giá thành công ${bidAmount.toLocaleString()} VND!`);
-        });
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function () {
-            // Set current datetime for auction end time
-            const now = new Date();
-            now.setHours(now.getHours() + 48); // 48 hours from now
-            document.getElementById('endTime').value = now.toISOString().slice(0, 16);
-        });
-
-
-            < !--Trong mỗi.auction - card-- >
-            function goToAuctionDetail(id, title, seller, price) {
-                // Tạo URL với các tham số sản phẩm
-                const url = `auctionsession?id=${id}&title=${encodeURIComponent(title)}&seller=${encodeURIComponent(seller)}&price=${price}`;
-
-                // Chuyển hướng đến trang chi tiết
-                window.location.href = url;
-            }
-
-
-        // Lưu trữ tài khoản (tạm thời, không dùng database)
-        let users = [];
-
-    // Mở modal đăng nhập
-    document.getElementById('loginBtn').addEventListener('click', function () {
-        document.getElementById('loginModal').style.display = 'block';
-    });
-
-    // Mở modal đăng ký
-    document.getElementById('registerBtn').addEventListener('click', function () {
-        document.getElementById('registerModal').style.display = 'block';
-    });
-
-    // Đóng modal khi click nút X
-    document.querySelectorAll('.close').forEach(function (closeBtn) {
-        closeBtn.addEventListener('click', function () {
-            this.closest('.modal').style.display = 'none';
-        });
-    });
-
-    // Đóng modal khi click bên ngoài
-    window.addEventListener('click', function (event) {
-        if (event.target.classList.contains('modal')) {
-            event.target.style.display = 'none';
-        }
-    });
-
-    // Xử lý đăng ký
-    document.getElementById('registerForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const username = document.getElementById('registerUsername').value;
-        const password = document.getElementById('registerPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-
-        // Kiểm tra mật khẩu trùng khớp
-        if (password !== confirmPassword) {
-            alert('Mật khẩu không trùng khớp!');
-            return;
-        }
-
-        // Kiểm tra username đã tồn tại
-        if (users.some(user => user.username === username)) {
-            alert('Tên đăng nhập đã tồn tại!');
-            return;
-        }
-
-        // Thêm user mới
-        users.push({ username, password });
-        alert('Đăng ký thành công! Vui lòng đăng nhập.');
-        document.getElementById('registerModal').style.display = 'none';
-        this.reset();
-    });
-
-    // Xử lý đăng nhập
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
-
-        // Kiểm tra thông tin đăng nhập
-        const user = users.find(user => user.username === username && user.password === password);
-
-        if (user) {
-            alert('Đăng nhập thành công!');
-            document.getElementById('loginModal').style.display = 'none';
-            this.reset();
-
-            // Thay đổi giao diện sau khi đăng nhập (ví dụ)
-            document.querySelector('.user-actions').innerHTML = `
-        <span>Xin chào, ${username}!</span>
-        <button class="btn btn-outline" id="logoutBtn">Đăng xuất</button>
-      `;
-
-            // Thêm sự kiện đăng xuất
-            document.getElementById('logoutBtn').addEventListener('click', function () {
-                document.querySelector('.user-actions').innerHTML = `
-          <button class="btn btn-outline" id="loginBtn">Đăng nhập</button>
-          <button class="btn btn-primary" id="registerBtn">Đăng ký</button>
-        `;
-                // Gắn lại sự kiện cho các nút mới
-                document.getElementById('loginBtn').addEventListener('click', function () {
-                    document.getElementById('loginModal').style.display = 'block';
-                });
-                document.getElementById('registerBtn').addEventListener('click', function () {
-                    document.getElementById('registerModal').style.display = 'block';
-                });
-            });
-        } else {
-            alert('Tên đăng nhập hoặc mật khẩu không đúng!');
-        }
-    });
-        * /
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-  e.preventDefault(); // Ngăn form gửi theo cách thông thường
-
-  const username = document.getElementById('username').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-
-  try {
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, email, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      // Đăng ký thành công
-      document.getElementById('message').innerHTML = `
-        <div class="success">Đăng ký thành công! Đang chuyển hướng...</div>
-      `;
-      setTimeout(() => window.location.href = '/login', 2000);
-    } else {
-      // Hiển thị lỗi từ server
-      document.getElementById('message').innerHTML = `
-        <div class="error">${data.error}</div>
-      `;
-    }
-  } catch (error) {
-    console.error('Lỗi:', error);
-    document.getElementById('message').innerHTML = `
-      <div class="error">Lỗi kết nối, vui lòng thử lại!</div>
-    `;
-  }
-}); */
-    </script>
-
 </body>
 </html>

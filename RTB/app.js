@@ -69,6 +69,13 @@ app.use(async (req, res, next) => {
 app.get('/', function (req, res, next) {
     res.render('index', { user: req.user });
 });
+app.get('/createauctions', async function (req, res, next) {
+    if (req.user) {
+        res.render('createauctions', { user: req.user });
+    } else {
+        res.status(400).send("Bad request!");
+    }
+});
     //register and login, logout
 app.post('/api/register', async (req, res) => {
 

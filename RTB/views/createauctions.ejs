@@ -1,0 +1,305 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuctionHub - Tạo sản phẩm đấu giá</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-gavel"></i>
+                <span>AuctionHub</span>
+            </div>
+            <div class="page-title>
+                Tạo đấu giá mới
+            </div>
+            <% if (user) { %>
+            <!-- Hiển thị khi đã đăng nhập -->
+            <div class="create-auction">
+                <a href="/createauctions" target="_blank" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Tạo đấu giá mới
+                </a>
+            </div>
+            <div class="user-section">
+                <i class="fas fa-user"></i>
+                <span><%= user.username %></span>
+                <a href="/" id="logoutButton" class="btn btn-outline">Đăng xuất</a>
+            </div>
+            <% } else { %>
+            <div class="login-section">
+                <form method="post" action="/" id="loginForm">
+                    <input type="text" id="loginUsername" placeholder="Tên đăng nhập" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+                </form>
+            </div>
+            <div class="register-section">
+                <form method="post" action="/" id="registerForm">
+                    <span class="close">&times;</span>
+                    <input type="text" id="registerUsername" placeholder="Tên đăng nhập" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <input type="password" id="registerConfirmPassword" placeholder="Xác nhận mật khẩu" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <button type="submit" class="btn btn-primary">Đăng ký</button>
+                </form>
+            </div>
+            <% } %>
+        </div>
+    </header>
+
+    <!-- Banner Section -->
+    <section class="auction-banner">
+        <div class="container banner-content">
+            <h1>Đấu Giá Sản Phẩm Trực Tuyến - Nơi Tìm Thấy Những Món Hời</h1>
+            <p>Hơn 10,000 sản phẩm độc đáo đang chờ bạn khám phá và đấu giá</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h2>Tạo đấu giá mới</h2>
+        <form id="createAuctionForm" class="create-auction-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Sản phẩm đấu giá *</label>
+                <input type="text" id="name" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Mô tả chi tiết *</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Danh mục *</label>
+                <select id="category" name="category" required>
+                    <option value="">-- Chọn danh mục --</option>
+                    <option value="electronics">Điện tử</option>
+                    <option value="fashion">Thời trang</option>
+                    <option value="collectibles">Đồ sưu tầm</option>
+                    <option value="art">Nghệ thuật</option>
+                    <option value="jewelry">Trang sức</option>
+                    <option value="other">Khác</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="startingPrice">Giá khởi điểm (VND) *</label>
+                <input type="number" id="startingPrice" name="startingPrice" min="1000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bidIncrement">Bước giá tối thiểu (VND) *</label>
+                <input type="number" id="bidIncrement" name="bidIncrement" min="1000" value="1000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="endTime">Thời gian kết thúc *</label>
+                <input type="datetime-local" id="endTime" name="endTime" required>
+            </div>
+
+            <div class="form-group">
+                <label>Hình ảnh sản phẩm (Tối đa 5 ảnh) *</label>
+                <div class="image-upload">
+                    <input type="file" id="images" name="images" accept="image/*" multiple required>
+                    <p>Kéo thả ảnh vào đây hoặc click để chọn</p>
+                    <div class="image-preview" id="imagePreview"></div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='/'">Hủy</button>
+                <button type="submit" class="btn btn-primary">Tạo đấu giá</button>
+            </div>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-section">
+                <h3>Về AuctionHub</h3>
+                <p>Nền tảng đấu giá trực tuyến hàng đầu Việt Nam</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liên hệ</h3>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#">FAQ</a>
+            </div>
+        </div>
+        <div class="copyright">&copy; 2023 AuctionHub</div>
+    </footer>
+
+    <script>
+        //register
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('registerUsername').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                const email = document.getElementById('registerEmail').value;
+                if (password != confirmPassword) {
+                    window.alert("password does not match");
+                    return;
+                }
+                try {
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password, email }),
+                    });
+                    if (response.ok) {
+                        window.alert("successfully register account!");
+                        document.getElementById('registerForm').reset();
+                    } else {
+                        if (response.status === 400) {
+                            const data = await response.json();
+                            window.alert(data.error);
+                        } else {
+                            throw new Error(`Unexpected response status: ${response.status}`);
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error: ", error);
+                }
+            });
+        }
+        //login
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password }),
+                    });
+                    if (response.ok) {
+                        window.alert("successfully login");
+                        window.setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        if (response.status === 400) {
+                            const data = await response.json();
+                            window.alert(data.error);
+                        } else {
+                            throw new Error(`Unexpected response status: ${response.status}`);
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error: ", error);
+                }
+            });
+        }
+        //logout
+        const logoutButton = document.getElementById('logoutButton')
+        if (logoutButton) {
+            logoutButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                    });
+                    console.log("hi");
+                    if (response.ok) {
+                        // Hiển thị thông báo và chuyển hướng
+                        alert('Đăng xuất thành công!');
+                        window.setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        if (response.status === 400) {
+                            const data = await response.json();
+                            window.alert(data.error);
+                        } else {
+                            throw new Error(`Unexpected response status: ${response.status}`);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Logout error:', error);
+                }
+            });
+        }
+        //create auction
+        const createAuctionForm = document.getElementById('createAuctionForm');
+        if (createAuctionForm) {
+            createAuctionForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Validate form
+                const title = document.getElementById('name').value;
+                const description = document.getElementById('description').value;
+                const category = document.getElementById('category').value;
+                const startingPrice = document.getElementById('startingPrice').value;
+                const bidIncrement = document.getElementById('bidIncrement').value;
+                const endTime = document.getElementById('endTime').value;
+                const images = document.getElementById('images').files;
+                // Create FormData object
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('description', description);
+                formData.append('category', category);
+                formData.append('startingPrice', startingPrice);
+                formData.append('bidIncrement', bidIncrement);
+                formData.append('endTime', endTime);
+
+                // Append all images
+                for (let i = 0; i < images.length; i++) {
+                    formData.append('images', images[i]);
+                }
+
+                try {
+                    // Show loading state
+                    const submitBtn = createAuctionForm.querySelector('button[type="submit"]');
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tạo...';
+
+                    const response = await fetch('/api/createauctions', {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'same-origin'
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        alert('Tạo đấu giá thành công!');
+                        window.location.href = `/auctionsession?id=${data.auctionId}`;
+                    } else {
+                        const error = await response.json();
+                        alert(`Lỗi: ${error.message || 'Không thể tạo đấu giá'}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi tạo đấu giá');
+                } finally {
+                    // Reset loading state
+                    const submitBtn = createAuctionForm.querySelector('button[type="submit"]');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Tạo đấu giá';
+                }
+            });
+        }
+    </script>
+    
+</body>
+</html>
