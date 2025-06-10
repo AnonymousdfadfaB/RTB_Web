@@ -31,24 +31,23 @@
             <div class="user-section">
                 <i class="fas fa-user"></i>
                 <span><%= user.username %></span>
-                <a href="/logout" class="btn btn-outline">Đăng xuất</a>
+                <a href="/" id="logoutButton" class="btn btn-outline">Đăng xuất</a>
             </div>
             <% } else { %>
             <div class="login-section">
-                <form method="post" action="/login" id="loginForm">
+                <form method="post" action="/" id="loginForm">
                     <input type="text" id="loginUsername" placeholder="Tên đăng nhập" required>
                     <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
                     <button type="submit" class="btn btn-primary">Đăng nhập</button>
-                    <button type="button" class="btn btn-outline" id="showRegisterBtn">Đăng ký</button>
                 </form>
             </div>
             <div class="register-section">
-                <form method="post" action="/register" id="registerForm">
+                <form method="post" action="/" id="registerForm">
                     <span class="close">&times;</span>
                     <input type="text" id="registerUsername" placeholder="Tên đăng nhập" required>
                     <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-                    <input type="password" id="confirmPassword" placeholder="Xác nhận mật khẩu" required>
-                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="password" id="registerConfirmPassword" placeholder="Xác nhận mật khẩu" required>
+                    <input type="email" id="registerEmail" placeholder="Email" required>
                     <button type="submit" class="btn btn-primary">Đăng ký</button>
                 </form>
             </div>
@@ -203,7 +202,144 @@
 
     <!-- Create Auction Modal -->
     <script>
+        //register
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('registerUsername').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                const email = document.getElementById('registerEmail').value;
+                if (password != confirmPassword) {
+                    window.alert("password does not match");
+                    return;
+                }
+                try {
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password, email }),
+                    });
+                    if (response.ok) {
+                        window.alert("successfully register account!");
+                        document.getElementById('registerForm').reset();
+                    } else {
+                        if (response.status === 400) {
+                            const data = await response.json();
+                            window.alert(data.error);
+                        } else {
+                            throw new Error(`Unexpected response status: ${response.status}`);
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error: ", error);
+                }
+            });
+        }
+        //login
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password }),
+                    });
+                    if (response.ok) {
+                        window.alert("successfully login");
+                        window.setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        if (response.status === 400) {
+                            const data = await response.json();
+                            window.alert(data.error);
+                        } else {
+                            throw new Error(`Unexpected response status: ${response.status}`);
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error: ", error);
+                }
+            });
+        }
+        //logout
+        const logoutButton = document.getElementById('logoutButton')
+        if (logoutButton) {
+            logoutButton.addEventListener('click', async (e) => {
+                e.preventDefault();
+                try {
+                    const response = await fetch('/api/logout', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                    });
+                    console.log("hi");
+                    if (response.ok) {
+                        // Hiển thị thông báo và chuyển hướng
+                        alert('Đăng xuất thành công!');
+                        window.setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        if (response.status === 400) {
+                            const data = await response.json();
+                            window.alert(data.error);
+                        } else {
+                            throw new Error(`Unexpected response status: ${response.status}`);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Logout error:', error);
+                }
+            });
+        }
+    </script>
+    <script>
             /*
+             //register, login, logout
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+     e.preventDefault();
+     const username = document.getElementById('registerUsername').value;
+     const password = document.getElementById('registerPassword').value;
+     const confirmPassword = document.getElementById('registerConfirmPassword').value;
+     const email = document.getElementById('registerEmail').value;
+     if (password == confirmPassword) {
+         window.alert("password does not match");
+         return;
+     }
+     try {
+         const response = await fetch('/api/register', {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({ username, password, email }),
+         });
+         if (response.ok) {
+             window.alert("successfully register account!");
+             document.getElementById('registerForm').reset();
+         } else {
+             if (response.status === 400) {
+                 const data = await response.json();
+                 window.alert(data.error);
+             } else {
+                 throw new Error(`Unexpected response status: ${response.status}`);
+             }
+         }
+     } catch (err) {
+         console.error("Error: ", error);
+     }
         // DOM Elements
         const createAuctionBtn = document.getElementById('createAuctionBtn');
         const createAuctionModal = document.getElementById('createAuctionModal');
@@ -492,7 +628,7 @@
       <div class="error">Lỗi kết nối, vui lòng thử lại!</div>
     `;
   }
-});
+}); */
     </script>
 
 </body>
