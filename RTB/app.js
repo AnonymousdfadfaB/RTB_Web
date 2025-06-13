@@ -2,31 +2,42 @@
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
 const cookieParser = require('cookie-parser');
-
+const multer = require('multer');
 const app = express();
+const fs = require('fs');
 //variables
 const PORT = 3000;
 
+// EJS
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public')); //notice here
 
-// EJS
-app.set('view engine', 'ejs');
-app.set('views', 'views');
+//Cấu hình multer 
+const storage = multer.diskStorage({
+    destination: 'drives',
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+})
 // Kết nối MongoDB
 const client = new MongoClient("mongodb://localhost:27017");
-let db, usersCollection, sessionsCollection;
+let db, usersCollection, sessionsCollection, auctionsCollection;
 
 async function connectDB() {
     await client.connect();
     db = client.db("auction-app");
     usersCollection = db.collection('users');
     sessionsCollection = db.collection('sessions');
+    auctionsCollection = db.collection('auctions');
     await usersCollection.createIndex({ username: 1 }, { unique: true });
     await usersCollection.createIndex({ email: 1 }, { unique: true });
+    //create index for auction collection
     console.log("Connected to MongoDB");
 }
 connectDB().catch(console.error);
@@ -143,8 +154,29 @@ app.post('/api/logout', async function (req, res, next) {
     }
 
 });
-
-
+//create auctions api
+app.post('/api/createauctions', async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ error: 'Bạn cần đăng nhập để tạo phiên đấu giá' });
+    }
+    const { title, description, startingPrice, endTime } = req.body;
+    try {
+        const auction = {
+            title,
+            description,
+            startingPrice,
+            endTime: new Date(endTime),
+            createdBy: req.user._id,
+            createdAt: new Date(),
+            bids: []
+        };
+        const result = await db.collection('auctions').insertOne(auction);
+        res.status(201).json({ message: 'Phiên đấu giá đã được tạo', auctionId: result.insertedId });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Lỗi server, vui lòng thử lại sau!' });
+    }
+}
 
 
 
