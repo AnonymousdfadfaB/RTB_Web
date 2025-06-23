@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const app = express();
 const fs = require('fs');
+const path = require('path');
 //variables
 const PORT = 3000;
 
@@ -19,12 +20,27 @@ app.use(express.static('public')); //notice here
 
 //Cấu hình multer 
 const storage = multer.diskStorage({
-    destination: 'drives',
+    destination: 'public/drives',
     filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
+        const uniqueFilename = `${Date.now() + '-' + Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
+        cb(null, uniqueFilename);
     }
-})
+});
+const upload = multer({
+    storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // Giới hạn kích thước tệp là 10MB
+    fileFilter: (req, file, cb) => {
+        const fileTypes = /jpeg|jpg|png|gif/;
+        const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+        const mimetype = fileTypes.test(file.mimetype);
+
+        if (extname && mimetype) {
+            return cb(null, true);
+        } else {
+            cb('Error: Chỉ chấp nhận file ảnh (JPEG, JPG, PNG, GIF)!');
+        }
+    }
+});
 // Kết nối MongoDB
 const client = new MongoClient("mongodb://localhost:27017");
 let db, usersCollection, sessionsCollection, auctionsCollection;
@@ -77,8 +93,22 @@ app.use(async (req, res, next) => {
     next();
 });
     //home page
-app.get('/', function (req, res, next) {
-    res.render('index', { user: req.user });
+app.get('/', async function (req, res, next) {
+    try {
+        // Lấy 10 auctions gần nhất, sắp xếp theo thời gian tạo mới nhất
+        const latestAuctions = await db.collection('auctions')
+            .find()
+            .sort({ createdAt: -1 })  // Sắp xếp giảm dần (mới nhất đầu tiên)
+            .limit(10)                // Giới hạn 10 kết quả
+            .toArray();
+        console.log(latestAuctions); // In ra để kiểm tra dữ liệu
+        res.render('index', {
+            user: req.user,
+            auctions: latestAuctions
+        });
+    } catch (error) {
+        next(error); // Chuyển lỗi đến middleware xử lý lỗi
+    }
 });
 app.get('/createauctions', async function (req, res, next) {
     if (req.user) {
@@ -155,20 +185,24 @@ app.post('/api/logout', async function (req, res, next) {
 
 });
 //create auctions api
-app.post('/api/createauctions', async (req, res) => {
+app.post('/api/createauctions', upload.array('images', 5), async (req, res) => {
     if (!req.user) {
         return res.status(401).json({ error: 'Bạn cần đăng nhập để tạo phiên đấu giá' });
     }
-    const { title, description, startingPrice, endTime } = req.body;
+    const { title, description, category, startingPrice, bidIncrement, endTime,  } = req.body;
     try {
+        const images = req.files?.map(file => `public/uploads/${file.filename}`) || [];
         const auction = {
             title,
             description,
+            category,
             startingPrice,
+            bidIncrement,
             endTime: new Date(endTime),
+            images,
             createdBy: req.user._id,
             createdAt: new Date(),
-            bids: []
+            bids: [] // Mảng lưu trữ các lượt đấu giá
         };
         const result = await db.collection('auctions').insertOne(auction);
         res.status(201).json({ message: 'Phiên đấu giá đã được tạo', auctionId: result.insertedId });
@@ -176,22 +210,110 @@ app.post('/api/createauctions', async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Lỗi server, vui lòng thử lại sau!' });
     }
-}
+});
 
 
+// Add this route after your existing routes
+app.get('/auctions/:id', async function (req, res, next) {
+    try {
+        const auctionId = req.params.id;
 
+        // Validate the auction ID format
+        if (!ObjectId.isValid(auctionId)) {
+            return res.status(400).json({ error: 'Invalid auction ID format' });
+        }
 
+        // Find the auction by ID and populate creator information
+        const auction = await auctionsCollection.aggregate([
+            { $match: { _id: new ObjectId(auctionId) } },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'createdBy',
+                    foreignField: '_id',
+                    as: 'creator'
+                }
+            },
+            { $unwind: '$creator' },
+            {
+                $project: {
+                    title: 1,
+                    description: 1,
+                    category: 1,
+                    startingPrice: 1,
+                    currentBid: 1,
+                    bidIncrement: 1,
+                    endTime: 1,
+                    images: 1,
+                    bids: 1,
+                    createdAt: 1,
+                    'creator.username': 1,
+                    'creator._id': 1,
+                    status: {
+                        $cond: {
+                            if: { $gt: ['$endTime', new Date()] },
+                            then: 'active',
+                            else: 'ended'
+                        }
+                    }
+                }
+            }
+        ]).next();
 
+        if (!auction) {
+            return res.status(404).render('404', {
+                user: req.user,
+                message: 'Phiên đấu giá không tồn tại'
+            });
+        }
 
+        // Format the bids with bidder information
+        if (auction.bids && auction.bids.length > 0) {
+            const bidsWithBidders = await Promise.all(
+                auction.bids.map(async bid => {
+                    const bidder = await usersCollection.findOne(
+                        { _id: bid.bidder },
+                        { projection: { username: 1 } }
+                    );
+                    return {
+                        ...bid,
+                        bidderUsername: bidder ? bidder.username : 'Ẩn danh',
+                        timestamp: bid.timestamp.toLocaleString('vi-VN')
+                    };
+                })
+            );
 
+            // Sort bids by amount (descending)
+            auction.bids = bidsWithBidders.sort((a, b) => b.amount - a.amount);
+        }
 
+        // Format dates for display
+        auction.createdAtFormatted = auction.createdAt.toLocaleString('vi-VN');
+        auction.endTimeFormatted = auction.endTime.toLocaleString('vi-VN');
 
+        // Calculate time remaining if auction is still active
+        if (auction.status === 'active') {
+            const timeLeft = auction.endTime - new Date();
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            auction.timeLeft = `${days} ngày ${hours} giờ`;
+        }
 
+        // Check if current user is the auction creator
+        const isOwner = req.user && req.user._id.equals(auction.creator._id);
 
+        res.render('auction-detail', {
+            user: req.user,
+            auction,
+            isOwner,
+            currentPrice: auction.currentBid || auction.startingPrice
+        });
 
-app.get('/auctionsession', function (req, res, next) {
-    res.render('index', { user: 'Express' }); //index
-}); 
+    } catch (error) {
+        console.error('Error fetching auction:', error);
+        next(error);
+    }
+});
 app.get('/payment', function (req, res, next) {
     res.render('index', { user: 'Express' }); //index
 }); 

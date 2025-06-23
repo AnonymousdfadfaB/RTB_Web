@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn - AuctionHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reuse styles from your main CSS */
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #f8f9fa;
+            --dark-color: #343a40;
+            --light-color: #ffffff;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --text-color: #333333;
+            --text-light: #6c757d;
+            --border-radius: 5px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--dark-color);
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .guide-section {
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+            .step-content h3 {
+                margin-bottom: 0.5rem;
+            }
+
+        .note {
+            background-color: var(--warning-color);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-question-circle"></i> Hướng dẫn sử dụng AuctionHub</h1>
+
+        <div class="guide-section">
+            <h2>Hướng dẫn cho người mua</h2>
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Tìm kiếm sản phẩm</h3>
+                    <p>Sử dụng thanh tìm kiếm hoặc duyệt danh mục để tìm sản phẩm bạn quan tâm.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Xem chi tiết sản phẩm</h3>
+                    <p>Nhấp vào sản phẩm để xem thông tin chi tiết, hình ảnh, giá hiện tại và thời gian còn lại.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Đặt giá</h3>
+                    <p>Nhập số tiền bạn muốn đặt (phải cao hơn giá hiện tại ít nhất 1,000₫) và nhấn "Đặt giá".</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Theo dõi đấu giá</h3>
+                    <p>Bạn sẽ nhận được thông báo nếu có người đặt giá cao hơn. Bạn có thể đặt giá lại nếu muốn.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Thanh toán khi thắng đấu giá</h3>
+                    <p>Khi đấu giá kết thúc, nếu bạn là người đặt giá cao nhất, hãy liên hệ với người bán để hoàn tất giao dịch.</p>
+                </div>
+            </div>
+
+            <div class="note">
+                <p><strong>Lưu ý:</strong> Khi đặt giá, bạn cam kết sẽ mua sản phẩm nếu thắng đấu giá. Vui lòng chỉ đặt giá khi bạn thực sự có nhu cầu mua.</p>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>Hướng dẫn cho người bán</h2>
+
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Tạo đấu giá mới</h3>
+                    <p>Nhấp vào nút "Tạo đấu giá mới" và điền đầy đủ thông tin sản phẩm.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Thêm hình ảnh sản phẩm</h3>
+                    <p>Tải lên ít nhất 1 hình ảnh rõ nét về sản phẩm để thu hút người mua.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Thiết lập thời gian đấu giá</h3>
+                    <p>Chọn thời gian kết thúc phù hợp (tối thiểu 1 ngày, tối đa 30 ngày).</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Theo dõi đấu giá</h3>
+                    <p>Bạn sẽ nhận được thông báo khi có người đặt giá cho sản phẩm của mình.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Liên hệ với người thắng đấu giá</h3>
+                    <p>Khi đấu giá kết thúc, hãy liên hệ với người đặt giá cao nhất để hoàn tất giao dịch.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-section">
+            <h2>Câu hỏi thường gặp</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">Tôi có thể hủy đặt giá sau khi đã đặt không?</div>
+                <p>Không, đặt giá là cam kết mua hàng nếu bạn thắng đấu giá. Vui lòng cân nhắc kỹ trước khi đặt giá.</p>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Phí dịch vụ của AuctionHub là bao nhiêu?</div>
+                <p>Hiện tại chúng tôi không thu phí từ người dùng. AuctionHub hoàn toàn miễn phí.</p>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Làm sao để giải quyết tranh chấp?</div>
+                <p>Nếu có tranh chấp xảy ra, vui lòng liên hệ với bộ phận hỗ trợ của chúng tôi qua email hoặc số điện thoại hỗ trợ.</p>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Tôi có thể gia hạn thời gian đấu giá không?</div>
+                <p>Bạn không thể gia hạn sau khi đấu giá đã bắt đầu. Hãy đặt thời gian kết thúc phù hợp khi tạo đấu giá.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -7,6 +7,435 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #f8f9fa;
+            --dark-color: #343a40;
+            --light-color: #ffffff;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --text-color: #333333;
+            --text-light: #6c757d;
+            --border-radius: 5px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+        }
+
+            .btn-primary:hover {
+                background-color: #3a5ae8;
+                transform: translateY(-2px);
+            }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+            .btn-outline:hover {
+                background-color: var(--primary-color);
+                color: var(--light-color);
+            }
+
+        /* Header Styles */
+        header {
+            background-color: var(--light-color);
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+            .logo i {
+                margin-right: 0.5rem;
+                font-size: 1.8rem;
+            }
+
+        .main-nav ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .main-nav a {
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+            .main-nav a.active {
+                color: var(--primary-color);
+            }
+
+                .main-nav a.active::after,
+                .main-nav a:hover::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 2px;
+                    background-color: var(--primary-color);
+                }
+
+        .user-section, .login-section, .register-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+            .user-section i {
+                font-size: 1.2rem;
+                color: var(--primary-color);
+            }
+
+            .login-section form, .register-section form {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        /* Banner Styles */
+        .auction-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--light-color);
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .banner-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .banner-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        .main-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--dark-color);
+        }
+
+        .auction-filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+            .search-box i {
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-light);
+            }
+
+            .search-box input {
+                width: 100%;
+                padding: 0.5rem 1rem 0.5rem 2.5rem;
+                border: 1px solid #ddd;
+                border-radius: var(--border-radius);
+                font-family: inherit;
+            }
+
+        .auction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .auction-card {
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+            .auction-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+        .auction-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+            .auction-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: var(--transition);
+            }
+
+        .auction-card:hover .auction-image img {
+            transform: scale(1.05);
+        }
+
+        .auction-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--success-color);
+            color: var(--light-color);
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .time-left {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--light-color);
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+        }
+
+            .time-left i {
+                margin-right: 0.3rem;
+            }
+
+        .auction-info {
+            padding: 1.5rem;
+        }
+
+            .auction-info h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+        .price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+            .meta-info i {
+                margin-right: 0.3rem;
+            }
+
+        .auction-info .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .no-auctions {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--light-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--light-color);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-section {
+            margin-bottom: 2rem;
+        }
+
+            .footer-section h3 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+                color: var(--light-color);
+            }
+
+            .footer-section p {
+                margin-bottom: 1rem;
+                opacity: 0.8;
+            }
+
+            .footer-section a {
+                display: inline-block;
+                margin-right: 1rem;
+                color: var(--light-color);
+                opacity: 0.8;
+                transition: var(--transition);
+            }
+
+                .footer-section a:hover {
+                    opacity: 1;
+                    color: var(--primary-color);
+                }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-nav ul {
+                gap: 1rem;
+            }
+
+            .auction-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .banner-content h1 {
+                font-size: 2rem;
+            }
+
+            .banner-content p {
+                font-size: 1rem;
+            }
+
+            .auction-filters {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-section form, .register-section form {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            input[type="text"],
+            input[type="password"],
+            input[type="email"] {
+                width: 100%;
+            }
+
+            .auction-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -78,230 +507,58 @@
             </div>
         </div>
         <div class="auction-grid">
-            <!-- Auction Item 1 -->
+            <% auctions.forEach(auction => { %>
             <div class="auction-card">
                 <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Đồng hồ Rolex">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 2d 5h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Đồng hồ Rolex Oyster Perpetual</h3>
-                    <div class="price">25.500.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 12 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> NguyenVanA</span>
-                    </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
+                    <!-- Hiển thị ảnh đầu tiên nếu có -->
+                    <% if (auction.images && auction.images.length > 0) { %>
+                    <img src="<%= auction.images[0] %>" alt="<%= auction.title %>">
+                    <% } else { %>
+                    <img src="/images/default-auction.jpg" alt="Ảnh mặc định">
+                    <% } %>
 
-            <!-- Auction Item 2 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tai nghe Sony">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 1d 8h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Tai nghe Sony WH-1000XM4</h3>
-                    <div class="price">4.250.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 8 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> TranThiB</span>
+                    <div class="auction-status">
+                        <%= auction.status === 'active' ? 'Đang đấu giá' : 'Đã kết thúc' %>
                     </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
 
-            <!-- Auction Item 3 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Đồng hồ thông minh">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 3d 2h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Apple Watch Series 7 GPS 45mm</h3>
-                    <div class="price">8.900.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 15 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> LeVanC</span>
+                    <div class="time-left">
+                        <i class="fas fa-clock"></i>
+                        <!-- Tính toán thời gian còn lại -->
+                        <% const timeLeft = Math.max(0, new Date(auction.endTime) - new Date()); %>
+                        <%= Math.floor(timeLeft / (1000 * 60 * 60 * 24)) %>d
+                        <%= Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) %>h
                     </div>
-                    <button class="btn btn-primary" onclick="goToAuctionDetail('1', 'Đồng hồ Rolex Oyster Perpetual', 'NguyenVanA', 25500000)">Đấu giá</button>
                 </div>
-            </div>
 
-            <!-- Auction Item 4 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Máy ảnh Sony">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 5h 30m</div>
-                </div>
                 <div class="auction-info">
-                    <h3>Máy ảnh Sony Alpha A7 III</h3>
-                    <div class="price">32.750.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 22 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> PhamThiD</span>
+                    <h3><%= auction.title %></h3>
+                    <div class="price">
+                        <%= auction.currentBid ? auction.currentBid.toLocaleString('vi-VN') : auction.startingPrice.toLocaleString('vi-VN') %> ₫
                     </div>
-                    <button class="btn btn-primary">Đấu giá</button>
+                    <div class="meta-info">
+                        <span class="bid-count">
+                            <i class="fas fa-gavel"></i>
+                            <%= auction.bids ? auction.bids.length : 0 %> lượt
+                        </span>
+                        <span class="seller">
+                            <i class="fas fa-user"></i>
+                            <!-- Cần populate thông tin người bán nếu có -->
+                            <%= auction.createdBy.username || 'Người dùng' %>
+                        </span>
+                    </div>
+                    <button class="btn btn-primary"
+                            onclick="location.href='/auctions/<%= auction._id %>'">
+                        Đấu giá
+                    </button>
                 </div>
             </div>
-
-            <!-- Auction Item 5 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Giày thể thao">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 6d 4h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Giày Nike Air Jordan 1 Retro High</h3>
-                    <div class="price">3.450.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 7 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> HoangVanE</span>
-                    </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
-
-            <!-- Auction Item 6 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1505740106531-4243f3831c78?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tai nghe không dây">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 1d 12h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Tai nghe AirPods Pro 2</h3>
-                    <div class="price">5.200.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 9 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> NguyenThiF</span>
-                    </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
+            <% }); %>
         </div>
-        <h2 class="main-title">Sản Phẩm Đang Đấu Giá</h2>
-        <div class="auction-filters">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Tìm kiếm sản phẩm...">
-            </div>
+        <% if (auctions.length === 0) { %>
+        <div class="no-auctions">
+            <p>Hiện không có phiên đấu giá nào</p>
         </div>
-        <div class="auction-grid">
-            <!-- Auction Item 1 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Đồng hồ Rolex">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 2d 5h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Đồng hồ Rolex Oyster Perpetual</h3>
-                    <div class="price">25.500.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 12 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> NguyenVanA</span>
-                    </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
-
-            <!-- Auction Item 2 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tai nghe Sony">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 1d 8h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Tai nghe Sony WH-1000XM4</h3>
-                    <div class="price">4.250.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 8 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> TranThiB</span>
-                    </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
-
-            <!-- Auction Item 3 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Đồng hồ thông minh">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 3d 2h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Apple Watch Series 7 GPS 45mm</h3>
-                    <div class="price">8.900.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 15 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> LeVanC</span>
-                    </div>
-                    <button class="btn btn-primary" onclick="goToAuctionDetail('1', 'Đồng hồ Rolex Oyster Perpetual', 'NguyenVanA', 25500000)">Đấu giá</button>
-                </div>
-            </div>
-
-            <!-- Auction Item 4 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Máy ảnh Sony">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 5h 30m</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Máy ảnh Sony Alpha A7 III</h3>
-                    <div class="price">32.750.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 22 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> PhamThiD</span>
-                    </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
-
-            <!-- Auction Item 5 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Giày thể thao">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 6d 4h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Giày Nike Air Jordan 1 Retro High</h3>
-                    <div class="price">3.450.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 7 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> HoangVanE</span>
-                    </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
-
-            <!-- Auction Item 6 -->
-            <div class="auction-card">
-                <div class="auction-image">
-                    <img src="https://images.unsplash.com/photo-1505740106531-4243f3831c78?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tai nghe không dây">
-                    <div class="auction-status">Đang đấu giá</div>
-                    <div class="time-left"><i class="fas fa-clock"></i> 1d 12h</div>
-                </div>
-                <div class="auction-info">
-                    <h3>Tai nghe AirPods Pro 2</h3>
-                    <div class="price">5.200.000 ₫</div>
-                    <div class="meta-info">
-                        <span class="bid-count"><i class="fas fa-gavel"></i> 9 lượt</span>
-                        <span class="seller"><i class="fas fa-user"></i> NguyenThiF</span>
-                    </div>
-                    <button class="btn btn-primary">Đấu giá</button>
-                </div>
-            </div>
-        </div>
+        <% } %>
     </main>
 
     <!-- Footer -->

@@ -5,6 +5,6 @@
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="drives\" />
+    <Folder Include="public\uploads\" />
   </ItemGroup>
 </Project>
